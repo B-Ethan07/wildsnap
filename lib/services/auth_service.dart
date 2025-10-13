@@ -9,7 +9,6 @@ class AuthService {
   // Obtenir l'utilisateur actuel
   User? get currentUser => _auth.currentUser;
 
-  // Inscription avec email et mot de passe
   Future<UserCredential?> registerWithEmailAndPassword({
     required String email,
     required String password,
@@ -21,7 +20,6 @@ class AuthService {
         password: password,
       );
 
-      // Mettre à jour le nom d'affichage
       await userCredential.user?.updateDisplayName(name);
       await userCredential.user?.reload();
 
@@ -51,7 +49,6 @@ class AuthService {
     await _auth.signOut();
   }
 
-  // Gestion des erreurs Firebase
   String _handleAuthException(FirebaseAuthException e) {
     switch (e.code) {
       case 'weak-password':
