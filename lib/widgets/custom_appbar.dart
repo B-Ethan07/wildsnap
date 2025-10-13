@@ -39,8 +39,8 @@ class CustomAppbar extends StatelessWidget implements PreferredSizeWidget {
           Align(
             alignment: Alignment.centerRight,
             child: Switch(
-              value: provider.isDark,           // État actuel du thème
-              onChanged: (_) => provider.toggle(),  // Bascule le thème au clic
+              value: provider.isDark,
+              onChanged: (_) => provider.toggle(),
             ),
           ),
         ],
