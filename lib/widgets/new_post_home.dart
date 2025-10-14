@@ -24,7 +24,6 @@ class _NewPostHomeState extends State<NewPostHome> {
               final isDark = Theme
                   .of(context)
                   .brightness == Brightness.dark;
-
               return Container(
                 margin: const EdgeInsets.symmetric(
                     horizontal: 20, vertical: 10),
