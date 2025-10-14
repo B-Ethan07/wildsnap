@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:wildsnap/services/auth_service.dart';
 import 'package:wildsnap/services/post_service.dart';
 
 class NewPostHome extends StatefulWidget {
@@ -8,9 +9,10 @@ class NewPostHome extends StatefulWidget {
   @override
   _NewPostHomeState createState() => _NewPostHomeState();
 }
-
+final AuthService _authService = AuthService();
 class _NewPostHomeState extends State<NewPostHome> {
   final PostService _postService = PostService();
+  final user = _authService.currentUser;
 
   @override
   Widget build(BuildContext context) {
@@ -88,6 +90,24 @@ class _NewPostHomeState extends State<NewPostHome> {
                                 Expanded(
                                   flex: 3,
                                   child: Text(post['location']),
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 5),
+                            // User name :
+                            Row(
+                              children: [
+                                // TODO Display the good name by id
+                                Expanded(
+                                  flex: 2,
+                                  child: Text(
+                                    'Username:',
+                                    style: TextStyle(fontWeight: FontWeight.bold),
+                                  ),
+                                ),
+                                Expanded(
+                                  flex: 3,
+                                  child: Text( '${user?.displayName}'),
                                 ),
                               ],
                             ),
