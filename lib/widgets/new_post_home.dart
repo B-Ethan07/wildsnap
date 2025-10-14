@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:wildsnap/services/auth_service.dart';
 import 'package:wildsnap/services/post_service.dart';
 
 class NewPostHome extends StatefulWidget {
@@ -8,9 +9,10 @@ class NewPostHome extends StatefulWidget {
   @override
   _NewPostHomeState createState() => _NewPostHomeState();
 }
-
+final AuthService _authService = AuthService();
 class _NewPostHomeState extends State<NewPostHome> {
   final PostService _postService = PostService();
+  final user = _authService.currentUser;
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +26,6 @@ class _NewPostHomeState extends State<NewPostHome> {
               final isDark = Theme
                   .of(context)
                   .brightness == Brightness.dark;
-
               return Container(
                 margin: const EdgeInsets.symmetric(
                     horizontal: 20, vertical: 10),
@@ -58,7 +59,7 @@ class _NewPostHomeState extends State<NewPostHome> {
                         height: 400,
                       ),
                       Padding(
-                        padding: const EdgeInsets.all(8.0),
+                        padding: const EdgeInsets.all(10.0),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -77,6 +78,10 @@ class _NewPostHomeState extends State<NewPostHome> {
                                 ),
                               ],
                             ),
+                            Divider(
+                              height: 20,
+                              thickness: 1,
+                            ),
                             Row(
                               children: [
                                 Expanded(
@@ -91,6 +96,10 @@ class _NewPostHomeState extends State<NewPostHome> {
                                   child: Text(post['location']),
                                 ),
                               ],
+                            ),
+                            Divider(
+                              height: 20,
+                              thickness: 1,
                             ),
                             Row(
                               children: [
@@ -114,7 +123,6 @@ class _NewPostHomeState extends State<NewPostHome> {
                           ],
                         ),
                       ),
-
                     ],
                   ),
                 ),
