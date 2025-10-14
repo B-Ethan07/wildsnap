@@ -59,7 +59,7 @@ class _NewPostHomeState extends State<NewPostHome> {
                         height: 400,
                       ),
                       Padding(
-                        padding: const EdgeInsets.all(8.0),
+                        padding: const EdgeInsets.all(10.0),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -78,6 +78,10 @@ class _NewPostHomeState extends State<NewPostHome> {
                                 ),
                               ],
                             ),
+                            Divider(
+                              height: 20,
+                              thickness: 1,
+                            ),
                             Row(
                               children: [
                                 Expanded(
@@ -93,23 +97,9 @@ class _NewPostHomeState extends State<NewPostHome> {
                                 ),
                               ],
                             ),
-                            SizedBox(height: 5),
-                            // User name :
-                            Row(
-                              children: [
-                                // TODO Display the good name by id
-                                Expanded(
-                                  flex: 2,
-                                  child: Text(
-                                    'Username:',
-                                    style: TextStyle(fontWeight: FontWeight.bold),
-                                  ),
-                                ),
-                                Expanded(
-                                  flex: 3,
-                                  child: Text( '${user?.displayName}'),
-                                ),
-                              ],
+                            Divider(
+                              height: 20,
+                              thickness: 1,
                             ),
                             Row(
                               children: [
@@ -133,7 +123,6 @@ class _NewPostHomeState extends State<NewPostHome> {
                           ],
                         ),
                       ),
-
                     ],
                   ),
                 ),
