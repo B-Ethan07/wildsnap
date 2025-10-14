@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:wildsnap/screens/open_one_post.dart';
 import 'package:wildsnap/services/auth_service.dart';
 import 'package:wildsnap/services/post_service.dart';
 
@@ -54,16 +55,29 @@ class _PicCollectionState extends State<PicCollection> {
                     final post = posts[index];
                     final data = post.data() as Map<String, dynamic>;
                     final imageUrl = data['imageUrl'] ?? '';
-                    return Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(8),
-                        border: Border.all(
-                          color: isDark ? Colors.white : Colors.black,
-                          width: 0.3,
+                    return InkWell(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => OpenOnePost(postId: post.id),
+                          ),
+                        );
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8),
+                          border: Border.all(
+                            color: isDark ? Colors.white : Colors.black,
+                            width: 0.3,
+                          ),
                         ),
-                        image: DecorationImage(
-                          image: NetworkImage(imageUrl),
+                        clipBehavior: Clip.hardEdge, // pour que l'image suive le borderRadius
+                        child: Image.network(
+                          imageUrl,
                           fit: BoxFit.cover,
+                          width: double.infinity,
+                          height: double.infinity,
                         ),
                       ),
                     );

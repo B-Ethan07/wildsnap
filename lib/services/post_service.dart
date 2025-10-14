@@ -41,6 +41,15 @@ class PostService {
         .snapshots();
   }
 
+  // get one post by id
+
+  Stream<DocumentSnapshot> getPostById(String postId) {
+    return _firestore
+        .collection('posts')
+        .doc(postId)
+        .snapshots();
+  }
+
   Stream<QuerySnapshot> getUserPosts() {
     final String? userId = AuthService().currentUser?.uid;
     if (userId == null) {
