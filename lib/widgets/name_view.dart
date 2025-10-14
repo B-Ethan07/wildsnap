@@ -12,7 +12,6 @@ class NameView extends StatefulWidget {
 class _NameViewState extends State<NameView> {
 
   final user = _authService.currentUser;
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -24,7 +23,6 @@ class _NameViewState extends State<NameView> {
             LogoutButton(),
           ],
         )
-
       );
   }
 }

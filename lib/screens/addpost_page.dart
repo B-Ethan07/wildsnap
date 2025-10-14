@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:wildsnap/screens/main_screen.dart';
@@ -115,7 +114,6 @@ class _AddPostPageState extends State<AddPostPage> {
         location: _locationController.text.trim(),
         description: _descriptionController.text.trim(),
         imageUrl: imageUrl,
-        userId: FirebaseAuth.instance.currentUser?.uid,
       );
 
       if (!mounted) return;
