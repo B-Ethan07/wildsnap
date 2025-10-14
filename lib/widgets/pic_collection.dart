@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:wildsnap/screens/open_one_post.dart';
-import 'package:wildsnap/services/auth_service.dart';
 import 'package:wildsnap/services/post_service.dart';
 
 class PicCollection extends StatefulWidget {
