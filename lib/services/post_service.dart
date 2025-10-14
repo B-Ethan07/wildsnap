@@ -1,4 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'auth_service.dart';
 
 class PostService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -8,9 +10,11 @@ class PostService {
     required String location,
     String? description,
     required String imageUrl,
-    String? userId,
   }) async {
     try {
+      final User? user = AuthService().currentUser;
+      final String userId = user?.uid ?? 'anonymous';
+
       final docRef = _firestore.collection('posts').doc();
       final postId = docRef.id;
 
@@ -19,7 +23,7 @@ class PostService {
         'location': location,
         'description': description ?? '',
         'imageUrl': imageUrl,
-        'userId': userId ?? 'anonymous',
+        'userId': userId,
         'createdAt': FieldValue.serverTimestamp(),
       });
 
@@ -34,6 +38,27 @@ class PostService {
     return _firestore
         .collection('posts')
         .orderBy('createdAt', descending: true)
+        .snapshots();
+  }
+
+  // get one post by id
+
+  Stream<DocumentSnapshot> getPostById(String postId) {
+    return _firestore
+        .collection('posts')
+        .doc(postId)
+        .snapshots();
+  }
+
+  Stream<QuerySnapshot> getUserPosts() {
+    final String? userId = AuthService().currentUser?.uid;
+    if (userId == null) {
+      return const Stream.empty();
+    }
+
+    return _firestore
+        .collection('posts')
+        .where('userId', isEqualTo: userId)
         .snapshots();
   }
 }
