@@ -108,6 +108,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   decoration: const InputDecoration(
                     labelText: 'Email',
                     border: OutlineInputBorder(),
+                    prefixIcon: const Icon(Icons.email),
                   ),
                   keyboardType: TextInputType.emailAddress,
                   enabled: !_isLoading,
@@ -126,6 +127,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   decoration: const InputDecoration(
                     labelText: 'Mot de passe',
                     border: OutlineInputBorder(),
+                    prefixIcon: const Icon(Icons.password),
                   ),
                   obscureText: true,
                   enabled: !_isLoading,
