@@ -165,8 +165,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   obscureText: true,
                   enabled: !_isLoading,
                   validator: (value) {
-                    if (_verifyPasswordController != _passwordController) {
-                      return "Le mot de passe n'est pas le même";
+                    if (value != _passwordController.text) {
+                      return "Les mots de passe ne correspondent pas.";
                     }
                     return null;
                   },
@@ -213,7 +213,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.white.withOpacity(0.5),
+                        color: Colors.white.withValues(alpha: 0.5),
                         spreadRadius: 1,
                         blurRadius: 1,
                         offset: const Offset(0, 1),
@@ -221,7 +221,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ],
                   ),
                   child: TextButton(
-                    onPressed: () {},
+                      onPressed: () {},
                     style: TextButton.styleFrom(
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(25),

@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -9,6 +10,7 @@ class AuthService {
   // Obtenir l'utilisateur actuel
   User? get currentUser => _auth.currentUser;
 
+  // Inscription avec email et mot de passe
   Future<UserCredential?> registerWithEmailAndPassword({
     required String email,
     required String password,
@@ -20,6 +22,7 @@ class AuthService {
         password: password,
       );
 
+      // Mettre à jour le nom d'affichage
       await userCredential.user?.updateDisplayName(name);
       await userCredential.user?.reload();
 
@@ -46,9 +49,37 @@ class AuthService {
 
   // Déconnexion
   Future<void> signOut() async {
+    await GoogleSignIn().signOut();
     await _auth.signOut();
   }
 
+  // Connexion avec Google
+  Future<UserCredential> loginWithGoogle() async {
+    try {
+      final googleAccount = await GoogleSignIn().signIn();
+
+      if (googleAccount == null) {
+        // L'utilisateur a annulé la connexion Google
+        throw Exception('Connexion Google annulée');
+      }
+
+      final googleAuth = await googleAccount.authentication;
+
+      final credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+
+      final userCredential = await _auth.signInWithCredential(credential);
+      return userCredential;
+    } on FirebaseAuthException catch (e) {
+      throw _handleAuthException(e);
+    } catch (e) {
+      throw Exception('Erreur lors de la connexion Google : $e');
+    }
+  }
+
+  // Gestion des erreurs Firebase
   String _handleAuthException(FirebaseAuthException e) {
     switch (e.code) {
       case 'weak-password':
