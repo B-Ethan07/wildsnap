@@ -14,6 +14,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final _nameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  final _verifyPasswordController = TextEditingController();
   final _authService = AuthService();
   bool _isLoading = false;
 
@@ -22,6 +23,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     _nameController.dispose();
     _emailController.dispose();
     _passwordController.dispose();
+    _verifyPasswordController.dispose();
     super.dispose();
   }
 
@@ -105,6 +107,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   decoration: const InputDecoration(
                     labelText: 'Nom',
                     border: OutlineInputBorder(),
+                      prefixIcon: const Icon(Icons.person),
                   ),
                   enabled: !_isLoading,
                   validator: (value) {
@@ -120,6 +123,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   decoration: const InputDecoration(
                     labelText: 'Email',
                     border: OutlineInputBorder(),
+                      prefixIcon: const Icon(Icons.email),
                   ),
                   keyboardType: TextInputType.emailAddress,
                   enabled: !_isLoading,
@@ -138,12 +142,31 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   decoration: const InputDecoration(
                     labelText: 'Mot de passe',
                     border: OutlineInputBorder(),
+                    prefixIcon: const Icon(Icons.password),
                   ),
                   obscureText: true,
                   enabled: !_isLoading,
                   validator: (value) {
                     if (value == null || value.length < 6) {
                       return 'Le mot de passe doit contenir au moins 6 caractères.';
+                    }
+                    return null;
+                  },
+                ),
+                // verify password
+                const SizedBox(height: 16),
+                TextFormField(
+                  controller: _verifyPasswordController,
+                  decoration: const InputDecoration(
+                    labelText: 'Confirm Password',
+                    border: OutlineInputBorder(),
+                    prefixIcon: const Icon(Icons.password),
+                  ),
+                  obscureText: true,
+                  enabled: !_isLoading,
+                  validator: (value) {
+                    if (_verifyPasswordController != _passwordController) {
+                      return "Le mot de passe n'est pas le même";
                     }
                     return null;
                   },
@@ -160,11 +183,69 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     width: 20,
                     child: CircularProgressIndicator(strokeWidth: 2),
                   )
-                      : const Text('S\'inscrire'),
+                      : const Text(
+                      'S\'inscrire',
+                    style: TextStyle(
+                      fontSize: 16,
+                    ),),
                 ),
                 TextButton(
                   onPressed: _isLoading ? null : _navigateToLogin,
                   child: const Text('Déjà un compte ? Se connecter'),
+                ),
+                Divider(
+                  color: Colors.grey[300],
+                  thickness: 1,
+                  indent: 16,
+                  endIndent: 16,
+                ),
+
+                const Center(child: Text("Or")),
+                const SizedBox(height: 16),
+
+                // Bouton Google
+                Container(
+                  height: 45,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(25),
+                    border: Border.all(
+                      color: Colors.green,
+                    ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.white.withOpacity(0.5),
+                        spreadRadius: 1,
+                        blurRadius: 1,
+                        offset: const Offset(0, 1),
+                      ),
+                    ],
+                  ),
+                  child: TextButton(
+                    onPressed: () {},
+                    style: TextButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(25),
+                      ),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Image.asset(
+                          'assets/../google_logo.png',
+                          height: 22,
+                          width: 22,
+                        ),
+                        const SizedBox(width: 12),
+                        const Text(
+                          "Sign In with Google",
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
               ],
             ),
