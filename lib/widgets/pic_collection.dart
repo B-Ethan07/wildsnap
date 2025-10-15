@@ -71,7 +71,7 @@ class _PicCollectionState extends State<PicCollection> {
                             width: 0.3,
                           ),
                         ),
-                        clipBehavior: Clip.hardEdge, // pour que l'image suive le borderRadius
+                        clipBehavior: Clip.hardEdge,
                         child: Image.network(
                           imageUrl,
                           fit: BoxFit.cover,
