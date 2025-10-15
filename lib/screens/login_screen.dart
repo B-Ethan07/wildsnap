@@ -159,6 +159,87 @@ class _LoginScreenState extends State<LoginScreen> {
                   onPressed: _isLoading ? null : _navigateToRegister,
                   child: const Text('Pas de compte ? S\'inscrire'),
                 ),
+                Divider(
+                  color: Colors.grey[300],
+                  thickness: 1,
+                  indent: 16,
+                  endIndent: 16,
+                ),
+
+                const Center(child: Text("Or")),
+                const SizedBox(height: 16),
+
+                // Bouton Google
+                Container(
+                  height: 45,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(25),
+                    border: Border.all(
+                      color: Colors.green,
+                    ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.white.withOpacity(0.5),
+                        spreadRadius: 1,
+                        blurRadius: 1,
+                        offset: const Offset(0, 1),
+                      ),
+                    ],
+                  ),
+                  child: TextButton(
+                    onPressed: () async {
+                        try {
+                          final userCredential = await AuthService().loginWithGoogle();
+                          final user = userCredential.user;
+                          if (user != null && mounted) {
+                            // L'utilisateur est connecté, on navigue vers MainScreen
+                            Navigator.of(context).pushReplacement(
+                              MaterialPageRoute(
+                                builder: (context) => const MainScreen(),
+                              ),
+                            );
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text('Erreur lors de la connexion.'),
+                                backgroundColor: Colors.red,
+                              ),
+                            );
+                          }
+                        } catch (e) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text('Erreur : $e'),
+                              backgroundColor: Colors.red,
+                            ),
+                          );
+                        }
+                    },
+                    style: TextButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(25),
+                      ),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Image.asset(
+                          'assets/../google_logo.png',
+                          height: 22,
+                          width: 22,
+                        ),
+                        const SizedBox(width: 12),
+                        const Text(
+                          "Sign In with Google",
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
               ],
             ),
           ),

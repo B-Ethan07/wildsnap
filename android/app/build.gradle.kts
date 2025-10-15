@@ -7,6 +7,10 @@ plugins {
     // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
     id("dev.flutter.flutter-gradle-plugin")
 }
+dependencies {
+    implementation 'com.google.android.gms:play-services-auth:21.4.0'
+    //Vos autres dépendances
+}
 
 android {
     namespace = "fr.abbas.wildsnap"
