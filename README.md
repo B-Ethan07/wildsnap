@@ -1,16 +1,71 @@
-# wildsnap
+# WildSnap
 
-A mobile app that lets users discover animals based on their location, snap photos of wildlife they encounter, and learn fun facts about those animals using public animal APIs. It’s part educational, part social, and fully immersive.
+**Application mobile Flutter pour photographier et partager des observations d'animaux sauvages.**
 
-## Getting Started
+## Description
 
-This project is a starting point for a Flutter application.
+WildSnap est une plateforme communautaire permettant aux utilisateurs de documenter leurs rencontres avec la faune.  
+L'application offre un flux social, la gestion de collections personnelles et l'intégration de faits animaliers via une API.
 
-A few resources to get you started if this is your first Flutter project:
+## Fonctionnalités
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+### Authentification
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- Inscription et connexion par email/mot de passe  
+- Connexion via Google Sign-In  
+- Gestion de session utilisateur
+
+### Pages principales
+
+- **Home** : Flux communautaire des publications + intégration de la Cat Fact API  
+- **Ajout** : Capture photo et formulaire de publication (nom, type, description)  
+- **Collection** : Galerie personnelle, profil utilisateur et déconnexion
+
+### Interface
+
+- Support du mode sombre/clair  
+- Navigation par onglets  
+- Design responsive
+
+## Stack technique
+
+- **Flutter** : Framework mobile  
+- **Firebase Authentication** : Gestion des utilisateurs  
+- **Cloud Firestore** : Base de données  
+- **Firebase Storage** : Stockage d'images  
+- **Cat Fact API** : Contenu additionnel
+
+## Installation
+
+### Prérequis
+
+- Flutter SDK 3.0+  
+- Compte Firebase
+
+### Configuration
+
+1. Cloner le repository :
+   ```bash
+   git clone https://github.com/B-Ethan07/wildsnap
+   cd wildsnap
+   flutter pub get
+   ```
+
+2. Configurer Firebase
+   - Créer un projet sur [Firebase Console](https://console.firebase.google.com)
+   - Ajouter les applications Android/iOS
+   - Télécharger `google-services.json` et `GoogleService-Info.plist`
+   - Activer Authentication (Email/Password et Google)
+   - Créer une base de donnée Firestore
+
+3. Placer les fichiers de configuration
+```
+android/app/google-services.json
+ios/Runner/GoogleService-Info.plist
+```
+
+4. Lancer l'application
+```bash
+flutter run
+```
+
