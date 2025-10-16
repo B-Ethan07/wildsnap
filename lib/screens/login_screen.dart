@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:wildsnap/screens/main_screen.dart';
 import 'package:wildsnap/screens/register_page.dart';
 import 'package:wildsnap/services/auth_service.dart';
 
@@ -44,12 +43,7 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
           );
 
-          // Naviguer vers MainScreen après connexion réussie
-          Navigator.of(context).pushReplacement(
-            MaterialPageRoute(
-              builder: (context) => const MainScreen(),
-            ),
-          );
+          // AuthWrapper gère automatiquement la redirection vers MainScreen
         }
       } catch (e) {
         if (mounted) {
@@ -70,13 +64,63 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
-
   void _navigateToRegister() {
     Navigator.of(context).pushReplacement(
       MaterialPageRoute(
         builder: (context) => const RegisterScreen(),
       ),
     );
+  }
+
+  Future<void> _loginWithGoogle() async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    try {
+      print('🚀 Début connexion Google...');
+      final userCredential = await _authService.loginWithGoogle();
+      print('✅ UserCredential reçu : ${userCredential.user?.email}');
+
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Connexion réussie !'),
+            backgroundColor: Colors.green,
+          ),
+        );
+
+        // AuthWrapper gère automatiquement la redirection vers MainScreen
+      }
+    } catch (e, stackTrace) {
+      print('❌ Erreur complète : $e');
+      print('📋 Stack trace : $stackTrace');
+
+      if (mounted) {
+        String errorMessage = 'Erreur : $e';
+
+        // Messages plus clairs pour l'utilisateur
+        if (e.toString().contains('popup_closed')) {
+          errorMessage = 'Connexion annulée. Veuillez réessayer.';
+        } else if (e.toString().contains('network')) {
+          errorMessage = 'Erreur de connexion. Vérifiez votre internet.';
+        }
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(errorMessage),
+            backgroundColor: Colors.red,
+            duration: const Duration(seconds: 4),
+          ),
+        );
+      }
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
+    }
   }
 
   @override
@@ -108,7 +152,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   decoration: const InputDecoration(
                     labelText: 'Email',
                     border: OutlineInputBorder(),
-                    prefixIcon: const Icon(Icons.email),
+                    prefixIcon: Icon(Icons.email),
                   ),
                   keyboardType: TextInputType.emailAddress,
                   enabled: !_isLoading,
@@ -127,7 +171,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   decoration: const InputDecoration(
                     labelText: 'Mot de passe',
                     border: OutlineInputBorder(),
-                    prefixIcon: const Icon(Icons.password),
+                    prefixIcon: Icon(Icons.password),
                   ),
                   obscureText: true,
                   enabled: !_isLoading,
@@ -140,7 +184,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 const SizedBox(height: 24),
                 ElevatedButton(
-                  onPressed: _loginUser,
+                  onPressed: _isLoading ? null : _loginUser,
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(vertical: 16),
                   ),
@@ -165,7 +209,6 @@ class _LoginScreenState extends State<LoginScreen> {
                   indent: 16,
                   endIndent: 16,
                 ),
-
                 const Center(child: Text("Or")),
                 const SizedBox(height: 16),
 
@@ -187,40 +230,21 @@ class _LoginScreenState extends State<LoginScreen> {
                     ],
                   ),
                   child: TextButton(
-                    onPressed: () async {
-                        try {
-                          final userCredential = await AuthService().loginWithGoogle();
-                          final user = userCredential.user;
-                          if (user != null && mounted) {
-                            // L'utilisateur est connecté, on navigue vers MainScreen
-                            Navigator.of(context).pushReplacement(
-                              MaterialPageRoute(
-                                builder: (context) => const MainScreen(),
-                              ),
-                            );
-                          } else {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text('Erreur lors de la connexion.'),
-                                backgroundColor: Colors.red,
-                              ),
-                            );
-                          }
-                        } catch (e) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text('Erreur : $e'),
-                              backgroundColor: Colors.red,
-                            ),
-                          );
-                        }
-                    },
+                    onPressed: _isLoading ? null : _loginWithGoogle,
                     style: TextButton.styleFrom(
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(25),
                       ),
                     ),
-                    child: Row(
+                    child: _isLoading
+                        ? const SizedBox(
+                      height: 20,
+                      width: 20,
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2,
+                      ),
+                    )
+                        : Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Image.asset(
